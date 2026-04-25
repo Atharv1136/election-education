@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+/* ===== ElectIQ Design System ===== */
+@theme {
+  /* Primary Colors */
+  --color-civic-900: #0F2347;
+  --color-civic-800: #142D5A;
+  --color-civic-700: #1A3C6E;
+  --color-civic-600: #1F4A85;
+  --color-civic-500: #2A5FA0;
+  --color-civic-400: #4B7FBF;
+  --color-civic-300: #7DA6D6;
+  --color-civic-200: #B0CDEA;
+  --color-civic-100: #DEEBF7;
+  --color-civic-50: #F0F5FB;
+
+  /* Accent / Gold */
+  --color-gold-900: #6B4100;
+  --color-gold-800: #8C5500;
+  --color-gold-700: #B36D00;
+  --color-gold-600: #D98A0A;
+  --color-gold-500: #F5A623;
+  --color-gold-400: #F7B84D;
+  --color-gold-300: #F9CB78;
+  --color-gold-200: #FBDEA8;
+  --color-gold-100: #FDF0D5;
+  --color-gold-50: #FEFAF0;
+
+  /* Neutrals */
+  --color-surface: #F9FAFB;
+  --color-surface-dark: #F3F4F6;
+  --color-border: #E5E7EB;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+
+  /* Semantic */
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --color-info: #3B82F6;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 20px 60px -15px rgba(26, 60, 110, 0.25);
+
+  /* Animation */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-slide-down: slide-down 0.3s ease-out;
+  --animate-pulse-dot: pulse-dot 1.4s infinite ease-in-out;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+}
+
+/* ===== Google Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ===== Animations ===== */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes wave {
+  0% { transform: translateX(0) translateZ(0) scaleY(1); }
+  50% { transform: translateX(-25%) translateZ(0) scaleY(0.55); }
+  100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-civic-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-civic-500);
+}
+
+/* ===== Gradient Backgrounds ===== */
+.bg-hero-gradient {
+  background: linear-gradient(135deg, var(--color-civic-900) 0%, var(--color-civic-700) 50%, var(--color-civic-600) 100%);
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-600) 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-500), var(--color-gold-300));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Wave Animation (Hero) ===== */
+.wave-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wave-container svg {
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 80px;
+}
+
+/* ===== Glass Effect ===== */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ===== Card Styles ===== */
+.card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* ===== Chat Bubbles ===== */
+.chat-bubble-user {
+  background: linear-gradient(135deg, var(--color-gold-500), var(--color-gold-600));
+  color: white;
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+}
+
+.chat-bubble-assistant {
+  background: linear-gradient(135deg, var(--color-civic-50), var(--color-civic-100));
+  color: var(--color-text-primary);
+  border-radius: 1.25rem 1.25rem 1.25rem 0.25rem;
+  border: 1px solid var(--color-civic-200);
+}
+
+/* ===== Timeline Line ===== */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--color-civic-300), var(--color-gold-300));
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 24px;
+  }
+}
+
+/* ===== Progress Bar ===== */
+.progress-bar {
+  background: var(--color-surface-dark);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, var(--color-civic-500), var(--color-gold-500));
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+}
+
+/* ===== Typing Indicator ===== */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-civic-400);
+  animation: pulse-dot 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ===== Quiz Option Styles ===== */
+.quiz-option {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.quiz-option:hover {
+  border-color: var(--color-civic-400);
+  background: var(--color-civic-50);
+}
+
+.quiz-option.correct {
+  border-color: var(--color-success);
+  background: #f0fdf4;
+}
+
+.quiz-option.incorrect {
+  border-color: var(--color-error);
+  background: #fef2f2;
+}
+
+/* ===== Floating Animation ===== */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ===== Focus Styles (Accessibility) ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-civic-500);
+  outline-offset: 2px;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: var(--color-gold-200);
+  color: var(--color-civic-900);
+}
