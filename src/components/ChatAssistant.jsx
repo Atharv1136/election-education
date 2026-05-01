@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { Send, Mic, MicOff, Sparkles } from 'lucide-react'
 import { streamChat } from '../lib/geminiClient'
+import { trackChatMessage } from '../lib/analytics'
 
 const SUGGESTED_PROMPTS = [
   "What is the last date to register as a voter?",
@@ -8,6 +9,9 @@ const SUGGESTED_PROMPTS = [
   "What are my rights on voting day?",
   "Explain the election code of conduct",
 ]
+
+/** Maximum allowed characters in a single message */
+const MAX_CHARS = 2000
 
 export default function ChatAssistant({ initialQuery = '', onMessagesUpdate }) {
   const [messages, setMessages] = useState([])
@@ -21,10 +25,15 @@ export default function ChatAssistant({ initialQuery = '', onMessagesUpdate }) {
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
   useEffect(() => { if (initialQuery) handleSend(initialQuery) }, [])
 
-  const handleSend = async (text) => {
-    const msg = text || input.trim()
+  const handleSend = useCallback(async (text) => {
+    // Sanitize: trim whitespace and enforce character limit
+    const raw = text || input
+    const msg = raw.trim().slice(0, MAX_CHARS)
     if (!msg || isStreaming) return
     setInput('')
+
+    // Track the message in GA4
+    trackChatMessage(msg)
 
     const userMsg = { role: 'user', content: msg, timestamp: new Date() }
     const newMessages = [...messages, userMsg]
@@ -51,7 +60,7 @@ export default function ChatAssistant({ initialQuery = '', onMessagesUpdate }) {
       setMessages(prev => [...prev, { role: 'assistant', content: 'I apologize, but I encountered an error. Please try again or check your API key configuration.', timestamp: new Date() }])
     }
     setIsStreaming(false)
-  }
+  }, [messages, input, isStreaming])
 
   const toggleVoice = () => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) return
@@ -116,12 +125,18 @@ export default function ChatAssistant({ initialQuery = '', onMessagesUpdate }) {
             {isListening ? <MicOff size={20}/> : <Mic size={20}/>}
           </button>
           <input
-            ref={inputRef} value={input} onChange={(e) => setInput(e.target.value)}
+            ref={inputRef} value={input} onChange={(e) => setInput(e.target.value.slice(0, MAX_CHARS))}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
             placeholder="Ask about elections, voting, or civic rights..."
             className="flex-1 px-4 py-2.5 rounded-xl border border-border bg-surface text-sm focus:outline-none focus:border-civic-400 focus:ring-2 focus:ring-civic-100 transition-all"
             disabled={isStreaming} aria-label="Chat input"
+            maxLength={MAX_CHARS}
           />
+          {input.length > 1800 && (
+            <span className={`absolute right-14 top-1/2 -translate-y-1/2 text-xs font-mono ${input.length >= MAX_CHARS ? 'text-error' : 'text-text-muted'}`}>
+              {input.length}/{MAX_CHARS}
+            </span>
+          )}
           <button onClick={() => handleSend()} disabled={isStreaming || !input.trim()} className="p-2.5 rounded-xl bg-hero-gradient text-white shadow-sm hover:opacity-90 disabled:opacity-50 transition-all" aria-label="Send message">
             <Send size={20}/>
           </button>

@@ -13,13 +13,22 @@ Key guidelines:
 - Encourage users to register to vote and participate in the democratic process
 - Never express political opinions or favor any party/candidate`
 
+/**
+ * Sends a multi-turn conversation to Gemini and returns a streaming response.
+ * The last message in the array is sent as the new user turn; all prior messages form the chat history.
+ *
+ * @param {Array<{role: 'user'|'assistant', content: string}>} messages - Full conversation history including the latest user message.
+ * @returns {Promise<AsyncIterable>} A Gemini async stream that yields text chunks.
+ * @throws {Error} If the Gemini API call fails (network error, invalid key, etc.)
+ */
 export async function streamChat(messages) {
   const model = genAI.getGenerativeModel({
     model: 'gemini-2.0-flash',
     systemInstruction: SYSTEM_PROMPT,
   })
 
-  const chatHistory = messages.slice(0, -1).map(msg => ({
+  // Map prior messages to Gemini history format (assistant → model)
+  const chatHistory = messages.slice(0, -1).map((msg) => ({
     role: msg.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: msg.content }],
   }))
@@ -31,6 +40,14 @@ export async function streamChat(messages) {
   return result.stream
 }
 
+/**
+ * Sends a single prompt to Gemini and returns the complete text response.
+ * Use for one-shot, non-streaming queries.
+ *
+ * @param {string} prompt - The prompt to send to Gemini.
+ * @returns {Promise<string>} The text response from Gemini.
+ * @throws {Error} If the Gemini API call fails.
+ */
 export async function quickChat(prompt) {
   const model = genAI.getGenerativeModel({
     model: 'gemini-2.0-flash',

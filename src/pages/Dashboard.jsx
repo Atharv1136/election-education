@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Navigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabaseClient'
+import PageLoader from '../components/PageLoader'
 import { Trophy, History, MessageCircle, Calendar } from 'lucide-react'
 
 export default function Dashboard() {
@@ -16,10 +17,9 @@ export default function Dashboard() {
     }
   }, [user])
 
-  async function fetchDashboardData() {
+  const fetchDashboardData = useCallback(async () => {
     setDataLoading(true)
     
-    // Fetch recent quiz scores
     const { data: scoresData } = await supabase
       .from('quiz_scores')
       .select('*')
@@ -28,7 +28,6 @@ export default function Dashboard() {
       .limit(5)
     setScores(scoresData || [])
 
-    // Fetch recent chat sessions
     const { data: chatsData } = await supabase
       .from('chat_history')
       .select('session_id, content, created_at')
@@ -36,17 +35,16 @@ export default function Dashboard() {
       .eq('role', 'user')
       .order('created_at', { ascending: false })
     
-    // Group chats by session id and just get the most recent ones
     const seen = new Set()
     const uniqueChats = (chatsData || [])
-      .filter(d => { if(seen.has(d.session_id)) return false; seen.add(d.session_id); return true })
+      .filter((d) => { if (seen.has(d.session_id)) return false; seen.add(d.session_id); return true })
       .slice(0, 5)
     
     setChats(uniqueChats)
     setDataLoading(false)
-  }
+  }, [user])
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-civic-200 border-t-civic-600 rounded-full animate-spin"/></div>
+  if (loading) return <PageLoader fullPage />
   if (!user) return <Navigate to="/" replace />
 
   return (

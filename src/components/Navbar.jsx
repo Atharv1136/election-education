@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import TranslateWidget from './TranslateWidget'
 import {
   Menu, X, Home, Calendar, Vote, MessageCircle,
-  HelpCircle, BookOpen, LayoutDashboard, LogIn, LogOut
+  HelpCircle, BookOpen, LayoutDashboard, LogIn, LogOut, MapPin
 } from 'lucide-react'
 
 const navLinks = [
@@ -13,6 +14,7 @@ const navLinks = [
   { to: '/assistant', label: 'Assistant', icon: MessageCircle },
   { to: '/quiz', label: 'Quiz', icon: HelpCircle },
   { to: '/glossary', label: 'Glossary', icon: BookOpen },
+  { to: '/polling-locator', label: 'Find Booth', icon: MapPin },
 ]
 
 export default function Navbar() {
@@ -56,8 +58,9 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Auth + Dashboard */}
+          {/* Auth + Dashboard + Translate */}
           <div className="hidden md:flex items-center gap-2">
+            <TranslateWidget />
             {user && (
               <Link
                 to="/dashboard"
