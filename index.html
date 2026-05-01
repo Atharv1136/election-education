@@ -4,7 +4,51 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>election-education</title>
+    <title>ElectIQ — Your AI-Powered Election Education Platform</title>
+    <meta name="description" content="ElectIQ is your AI-powered civic education platform. Learn about Indian elections, how to vote, election timelines, and test your knowledge with interactive quizzes." />
+    <meta name="keywords" content="election education, India elections, how to vote, EVM, voter registration, civic rights, ElectIQ" />
+    <meta name="author" content="ElectIQ" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="ElectIQ — Your AI-Powered Election Education Platform" />
+    <meta property="og:description" content="Learn about Indian elections and civic participation with ElectIQ, your AI-powered guide." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://electiq.app" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ElectIQ — Election Education Platform" />
+    <meta name="twitter:description" content="AI-powered civic education for Indian elections." />
+
+    <!-- Google Analytics (GA4) -->
+    <!-- Replace G-XXXXXXXXXX with your actual GA4 Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: document.title,
+        page_location: window.location.href
+      });
+    </script>
+
+    <!-- Google Translate widget styles override -->
+    <style>
+      .goog-te-banner-frame { display: none !important; }
+      body { top: 0 !important; }
+      .goog-te-gadget { font-size: 0 !important; }
+      .goog-te-gadget .goog-te-combo {
+        font-size: 12px !important;
+        padding: 3px 6px !important;
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important;
+        background: #f8fafc !important;
+        color: #374151 !important;
+        cursor: pointer;
+      }
+      .translate-widget { display: inline-flex; align-items: center; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
